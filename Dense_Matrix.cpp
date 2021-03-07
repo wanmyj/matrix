@@ -114,12 +114,12 @@ std::shared_ptr<std::vector<std::vector<T>>> DenseMatrix<T>::GetMatrix()
     return m_ptr;
 }
 
-// Access the individual elements
-template <typename T>
-std::vector<T> &DenseMatrix<T>::operator[](const unsigned &row)
-{
-    return this->(*m_ptr);
-}
+// // Access the individual elements
+// template <typename T>
+// std::vector<T> &DenseMatrix<T>::operator[](const unsigned &row)
+// {
+//     return this->(*m_ptr);
+// }
 
 template <typename T>
 void DenseMatrix<T>::UnityMatrix(unsigned rows, unsigned cols, const T &init)

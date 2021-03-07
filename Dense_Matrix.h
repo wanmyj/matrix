@@ -6,7 +6,7 @@
 namespace Matrix {
 
 template <typename T>
-class DenseMatrix : public BaseMatrix
+class DenseMatrix : public BaseMatrix<T>
 {
 private:
     std::shared_ptr<std::vector<std::vector<T>>> m_ptr;
@@ -18,7 +18,7 @@ public:
     virtual ~DenseMatrix() = default;
 
     // Assignment operator overloading
-    DenseMatrix<T> &operator=(const ProduceExpt<T> &rhs);
+    DenseMatrix<T> &operator=(const ProductExpr<T> &rhs);
     DenseMatrix<T> &operator=(const BaseMatrix<T> &rhs);
     DenseMatrix<T> &operator=(const DenseMatrix<T> &rhs);
     DenseMatrix<T> &operator=(DenseMatrix<T> &&rhs) = default;
@@ -32,6 +32,6 @@ private:
 
 } // Matrix
 
-#include "Base_Matrix.cpp"
+#include "Dense_Matrix.cpp"
 
 #endif

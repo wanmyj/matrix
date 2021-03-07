@@ -2,6 +2,7 @@
 #define __PRODUCT_EXPR_H
 
 #include <vector>
+#include <memory>
 
 namespace Matrix {
 
@@ -14,21 +15,118 @@ class ProductExpr
 public:
     std::vector<std::vector<T>> m_mat;
 public:
-    using auto = BaseMatrix<double>;
+    // using ProductExpr::auto = BaseMatrix<float>;
 
     template <typename F, typename E>
-    ProductExpr(const BaseMatrix<E> &lhs, const BaseMatrix<F> &rhs);
+    ProductExpr(const BaseMatrix<E> &lhs, const BaseMatrix<F> &rhs)
+    {
+        std::shared_ptr<std::vector<std::vector<T>>> lmat = lhs.GetMatrix();
+        unsigned lrow = lhs.get_rows();
+        unsigned lcol = lhs.get_cols();
+
+        std::shared_ptr<std::vector<std::vector<F>>> rmat = rhs.GetMatrix();
+        unsigned rrow = rhs.get_rows();
+        unsigned rcol = rhs.get_cols();
+
+        m_mat.resize(lrow);
+        for (unsigned i = 0; i < lrow; i++) {
+            m_mat[i].resize(rcol);
+        }
+
+        for (unsigned i = 0; i < lrow; i++) {
+            for (unsigned j = 0; j < rcol; j++) {
+                m_mat[i][j] = 0;
+                for (unsigned k = 0; k < lcol; k++) {
+                    m_mat[i][j] += (*lmat)[i][k] * (*rmat)[k][j];
+                }
+            }
+        }
+    }
 
     template <typename F, typename E>
-    ProductExpr(const ProductExpr<E> &lhs, const BaseMatrix<F> &rhs);
+    ProductExpr(const ProductExpr<E> &lhs, const BaseMatrix<F> &rhs)
+    {
+        unsigned lrow = lhs.m_mat.size();
+
+        std::shared_ptr<std::vector<std::vector<F>>> rmat = rhs.GetMatrix();
+        unsigned rrow = rhs.get_rows();
+        unsigned rcol = rhs.get_cols();
+
+        m_mat.resize(lrow);
+        for (unsigned i = 0; i < lrow; i++) {
+            m_mat[i].resize(rcol);
+        }
+
+        for (unsigned i = 0; i < lrow; i++) {
+            for (unsigned j = 0; j < rcol; j++) {
+                m_mat[i][j] = 0;
+                for (unsigned k = 0; k < rrow; k++) {
+                    m_mat[i][j] += lhs.m_mat[i][k] * (*rmat)[k][j];
+                }
+            }
+        }
+    }
 
     template <typename F, typename E>
-    ProductExpr(const BaseMatrix<F> &lhs, const ProductExpr<E> &rhs);
+    ProductExpr(const BaseMatrix<F> &lhs, const ProductExpr<E> &rhs)
+    {
+        std::shared_ptr<std::vector<std::vector<T>>> lmat = lhs.GetMatrix();
+        unsigned lrow = lhs.get_rows();
+        unsigned lcol = lhs.get_cols();
+
+        unsigned rcol = rhs.m_mat[0].size();
+
+        m_mat.resize(lrow);
+        for (unsigned i = 0; i < lrow; i++) {
+            m_mat[i].resize(rcol);
+        }
+
+        for (unsigned i = 0; i < lrow; i++) {
+            for (unsigned j = 0; j < rcol; j++) {
+                m_mat[i][j] = 0;
+                for (unsigned k = 0; k < lcol; k++) {
+                    m_mat[i][j] += (*lmat)[i][k] * rhs.m_mat[k][j];
+                }
+            }
+        }
+    }
 
     template <typename F, typename E>
-    ProductExpr(const ProductExpr<E> &lhs, const ProductExpr<F> &rhs);
+    ProductExpr(const ProductExpr<E> &lhs, const ProductExpr<F> &rhs)
+    {
 
-    ProductExpr(const unsigned &rows, const unsigned &cols);
+        unsigned lrow = lhs.m_mat.size();
+        unsigned rrow = rhs.m_mat.size();
+        unsigned rcol = rhs.m_mat[0].size();
+
+        m_mat.resize(lrow);
+        for (unsigned i = 0; i < lrow; i++) {
+            m_mat[i].resize(rcol);
+        }
+
+        for (unsigned i = 0; i < lrow; i++) {
+            for (unsigned j = 0; j < rcol; j++) {
+                m_mat[i][j] = 0;
+                for (unsigned k = 0; k < rrow; k++) {
+                    m_mat[i][j] += lhs.m_mat[i][k] * rhs.m_mat[k][j];
+                }
+            }
+        }
+    }
+
+    ProductExpr(const unsigned &rows, const unsigned &cols)
+    {
+        m_mat.resize(rows);
+        for (unsigned i = 0; i < rows; i++) {
+            m_mat[i].resize(cols);
+        }
+        for (unsigned i = 0; i < rows; i++) {
+            for (unsigned j = 0; j < cols; j++) {
+                m_mat[i][j] = 0;
+            }
+        }
+    }
+
 };
 
 // Matrix<T> * Matrix<T> operations
@@ -38,7 +136,7 @@ inline ProductExpr<T> operator*(const BaseMatrix<T> &lhs, BaseMatrix<T> &rhs)
     if ( lhs.get_cols() != rhs.get_rows()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<T>(lhs, rhs);
 }
 
 // Matrix<T> * Matrix<F> operations
@@ -49,7 +147,7 @@ inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs,
     if ( lhs.get_cols() != rhs.get_rows()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<double>(lhs, rhs);
 }
 
 // ProductExpr<T> * Matrix<T> operations
@@ -59,7 +157,7 @@ inline ProductExpr<T> operator*(const ProductExpr<T> &lhs, BaseMatrix<T> &rhs)
     if ( lhs.m_mat[0].size() != rhs.get_rows()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<T>(lhs, rhs);
 }
 
 // ProductExpr<T> * Matrix<F> operations
@@ -70,7 +168,7 @@ inline ProductExpr<double> operator*(const ProductExpr<T> &lhs,
     if ( lhs.m_mat[0].size() != rhs.get_rows()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<double>(lhs, rhs);
 }
 
 // Matrix<T> * ProductExpr<T> operations
@@ -80,7 +178,7 @@ inline ProductExpr<T> operator*(const BaseMatrix<T> &lhs, ProductExpr<T> &rhs)
     if ( lhs.get_cols() != rhs.m_mat.size()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<T>(lhs, rhs);
 }
 
 // Matrix<T> * ProductExpr<F> operations
@@ -91,7 +189,7 @@ inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs,
     if ( lhs.get_cols() != rhs.m_mat.size()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<double>(lhs, rhs);
 }
 
 // ProductExpr<T> * ProductExpr<T> operations
@@ -101,7 +199,7 @@ inline ProductExpr<T> operator*(const ProductExpr<T> &lhs, ProductExpr<T> &rhs)
     if ( lhs.m_mat[0].size() != rhs.m_mat.size()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<T>(lhs, rhs);
 }
 
 // ProductExpr<T> * ProductExpr<F> operations
@@ -112,7 +210,7 @@ inline ProductExpr<double> operator*(const ProductExpr<T> &lhs,
     if ( lhs.m_mat[0].size() != rhs.m_mat.size()) {
         throw std::invalid_argument( "two matrices are NOT multipliable" );
     }
-    return ProductExpr(lhs, rhs);
+    return ProductExpr<double>(lhs, rhs);
 }
 
 // Type Diff Matrix/Scalar operations
@@ -126,7 +224,7 @@ ProductExpr<double> operator*(const BaseMatrix<T> &lhs, const T &rhs)
     ProductExpr<double> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * rhs;
+            res.m_mat[i][j] = (*originMat)[i][j] * rhs;
         }
     }
     return res;
@@ -134,7 +232,7 @@ ProductExpr<double> operator*(const BaseMatrix<T> &lhs, const T &rhs)
 
 // Type Diff Scalar/Matrix operations
 template <typename T, typename F>
-ProductExpr<double> operator*(const T &lhs, const BaseMatrix<T> &rhs);
+ProductExpr<double> operator*(const T &lhs, const BaseMatrix<T> &rhs)
 {
     std::shared_ptr<std::vector<std::vector<T>>> originMat = rhs.GetMatrix();
     unsigned rows = rhs.get_rows();
@@ -143,7 +241,7 @@ ProductExpr<double> operator*(const T &lhs, const BaseMatrix<T> &rhs);
     ProductExpr<double> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * lhs;
+            res.m_mat[i][j] = (*originMat)[i][j] * lhs;
         }
     }
     return res;
@@ -160,7 +258,7 @@ ProductExpr<T> operator*(const BaseMatrix<T> &lhs, const T &rhs)
     ProductExpr<T> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * rhs;
+            res.m_mat[i][j] = (*originMat)[i][j] * rhs;
         }
     }
     return res;
@@ -168,7 +266,7 @@ ProductExpr<T> operator*(const BaseMatrix<T> &lhs, const T &rhs)
 
 // Type Same Scalar/Matrix operations
 template <typename T>
-ProductExpr<T> operator*(const T &lhs, const BaseMatrix<T> &rhs);
+ProductExpr<T> operator*(const T &lhs, const BaseMatrix<T> &rhs)
 {
     std::shared_ptr<std::vector<std::vector<T>>> originMat = rhs.GetMatrix();
     unsigned rows = rhs.get_rows();
@@ -177,7 +275,7 @@ ProductExpr<T> operator*(const T &lhs, const BaseMatrix<T> &rhs);
     ProductExpr<T> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * lhs;
+            res.m_mat[i][j] = (*originMat)[i][j] * lhs;
         }
     }
     return res;
@@ -193,7 +291,7 @@ ProductExpr<double> operator*(const ProductExpr<T> &lhs, const T &rhs)
     ProductExpr<double> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * rhs;
+            res.m_mat[i][j] = res.m_mat[i][j] * rhs;
         }
     }
     return res;
@@ -201,7 +299,7 @@ ProductExpr<double> operator*(const ProductExpr<T> &lhs, const T &rhs)
 
 // Type Diff Scalar/ProductExpr operations
 template <typename T, typename F>
-ProductExpr<double> operator*(const T &lhs, const ProductExpr<T> &rhs);
+ProductExpr<double> operator*(const T &lhs, const ProductExpr<T> &rhs)
 {
     unsigned rows = rhs.m_mat.size();
     unsigned cols = rhs.m_mat[0].size();
@@ -209,7 +307,7 @@ ProductExpr<double> operator*(const T &lhs, const ProductExpr<T> &rhs);
     ProductExpr<double> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * lhs;
+            res.m_mat[i][j] = res.m_mat[i][j] * lhs;
         }
     }
     return res;
@@ -225,7 +323,7 @@ ProductExpr<T> operator*(const ProductExpr<T> &lhs, const T &rhs)
     ProductExpr<T> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * rhs;
+            res.m_mat[i][j] = res.m_mat[i][j] * rhs;
         }
     }
     return res;
@@ -233,7 +331,7 @@ ProductExpr<T> operator*(const ProductExpr<T> &lhs, const T &rhs)
 
 // Type Same Scalar/ProductExpr operations
 template <typename T>
-ProductExpr<T> operator*(const T &lhs, const ProductExpr<T> &rhs);
+ProductExpr<T> operator*(const T &lhs, const ProductExpr<T> &rhs)
 {
     unsigned rows = rhs.m_mat.size();
     unsigned cols = rhs.m_mat[0].size();
@@ -241,7 +339,7 @@ ProductExpr<T> operator*(const T &lhs, const ProductExpr<T> &rhs);
     ProductExpr<T> res(rows, cols);
     for (unsigned i = 0; i < rows; i++) {
         for (unsigned j = 0; j < cols; j++) {
-            m_mat[i][j] = (*originMat)[i][j] * lhs;
+            res.m_mat[i][j] = res.m_mat[i][j] * lhs;
         }
     }
     return res;
@@ -255,7 +353,7 @@ ProductExpr<T> operator*(const T &lhs, const ProductExpr<T> &rhs);
 //     return;
 // }
 
-#include "Product_Expr.cpp"
+// #include "Product_Expr.cpp"
 
 } //Matrix
 
