@@ -9,7 +9,8 @@ namespace Matrix
 template <typename T>
 DenseMatrix<T>::DenseMatrix()
 {
-    m_ptr = std::make_shared<std::vector<std::vector<T>>>(m_mat);
+    m_ptr = std::make_shared<std::vector<std::vector<T>>>();
+    UnityMatrix(m_rows, m_cols, 0);
 }
 
 // Parameter Constructor
@@ -27,7 +28,7 @@ DenseMatrix<T>::DenseMatrix
     unsigned j = 0;
     for (auto& aRow : init) {
         for (auto& element : aRow) {
-            m_mat[i][j] = it;
+            (*m_ptr)[i][j] = it;
             j++;
         }
         j = 0
@@ -39,13 +40,55 @@ DenseMatrix<T>::DenseMatrix
 template <typename T>
 DenseMatrix<T> &DenseMatrix<T>::operator=(const DenseMatrix<T> &rhs)
 {
+    BaseMatrix::operator=(rhs);
+    m_ptr = std::make_shared<std::vector<std::vector<T>>>()
+
+    CopyFromMat(*rhs.GetMatrix());
     return *this;
+}
+
+// BaseType Assignment Operator
+template <typename T>
+DenseMatrix<T> &DenseMatrix<T>::operator=(const BaseMatrix<T> &rhs)
+{
+    BaseMatrix::operator=(rhs);
+    m_ptr = std::make_shared<std::vector<std::vector<T>>>()
+
+    CopyFromMat(*rhs.GetMatrix());
+    return *this;
+}
+
+// BaseType Assignment Operator
+template <typename T>
+DenseMatrix<T> &DenseMatrix<T>::operator=(const ProduceExpt<T> &rhs)
+{
+    m_ptr = std::make_shared<std::vector<std::vector<T>>>()
+    CopyFromMat(rhs.m_mat);
+    return *this;
+}
+
+template <typename T>
+void DenseMatrix<T>::CopyFromMat(std::vector<std::vector<T>> aVec)
+{
+    // when called, please make sure only v<v<T>> of mat form passed
+    m_rows = aVec.size();
+    m_cols = aVec[0].size();
+    (*m_ptr).resize(m_rows);
+    for (unsigned i = 0; i < (*m_ptr).size(); i++) {
+        (*m_ptr)[i].resize(m_cols);
+    }
+
+    for (unsigned i = 0; i < m_rows; i++) {
+        for (unsigned j = 0; j < m_cols; j++) {
+            (*m_ptr)[i][j] = aVec[i][j];
+        }
+    }
 }
 
 
 // Calculate a transpose of this matrix
 template <typename T>
-DenseMatrix<T> DenseMatrix<T>::transpose()
+DenseMatrix<T> DenseMatrix<T>::Transpose()
 {
     DenseMatrix result(m_rows, m_cols, 0.0);
 
@@ -53,7 +96,7 @@ DenseMatrix<T> DenseMatrix<T>::transpose()
     {
         for (unsigned j = 0; j < m_cols; j++)
         {
-            result(i, j) = this->m_mat[j][i];
+            result(i, j) = this->(*m_ptr)[j][i];
         }
     }
 
@@ -70,7 +113,7 @@ std::vector<T> DenseMatrix<T>::operator*(const std::vector<T> &rhs)
     {
         for (unsigned j = 0; j < m_cols; j++)
         {
-            result[i] = this->m_mat[i][j] * rhs[j];
+            result[i] = this->(*m_ptr)[i][j] * rhs[j];
         }
     }
 
@@ -88,24 +131,18 @@ std::shared_ptr<std::vector<std::vector<T>>> DenseMatrix<T>::GetMatrix()
 template <typename T>
 std::vector<T> &DenseMatrix<T>::operator[](const unsigned &row)
 {
-    return this->m_mat;
+    return this->(*m_ptr);
 }
 
 template <typename T>
 void DenseMatrix<T>::UnityMatrix(unsigned rows, unsigned cols, const T &init)
 {
-    m_mat.resize(rows);
-    for (unsigned i = 0; i < m_mat.size(); i++)
-    {
-        m_mat[i].resize(cols, _initial);
+    (*m_ptr).resize(rows);
+    for (unsigned i = 0; i < (*m_ptr).size(); i++) {
+        (*m_ptr)[i].resize(cols, init);
     }
     m_rows = rows;
     m_cols = cols;
-    for (unsigned i = 0; i < lrow; i++) {
-        for (unsigned j = 0; j < rcol; j++) {
-            m_mat[i][j] = init;
-        }
-    }
 }
 
 } // Matrix

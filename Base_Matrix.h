@@ -14,8 +14,8 @@ protected:
 
 public:
     BaseMatrix() : m_rows(0), m_cols(0) {};
-    BaseMatrix(const BaseMatrix<T> &rhs) = ; //copy contrructor
-    BaseMatrix(BaseMatrix<T> &&rhs) = ;      //move contrructor
+    BaseMatrix(const BaseMatrix<T> &rhs) = default; //copy contrructor
+    BaseMatrix(BaseMatrix<T> &&rhs) = default;      //move contrructor
     virtual ~BaseMatrix();
 
     // Operator overloading, for "standard" mathematical matrix operations
@@ -46,7 +46,7 @@ public:
 // 基类不提供数据结构,所有派生类需要设计自己的数据结构
 // 基类不提供任何方式的自定义构造函数，所有的自定义构造函数必须重载
 // 
-// GetMatrix()必须重载 返回一个智能指针，指向一片栈内存
+// GetMatrix()必须重载 返回一个智能指针，指向一片堆内存
 // Transpose必须重载
 // 同种类矩阵相乘，派生类与数字乘法的结果可以重载，不重载只返回DenseMatrix
 // mat[][] 修改元素 只有DENSE SPARSE允许 DIAG触发exception 

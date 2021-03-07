@@ -9,7 +9,6 @@ template <typename T>
 class DenseMatrix : public BaseMatrix
 {
 private:
-    std::vector<std::vector<T>> m_mat;
     std::shared_ptr<std::vector<std::vector<T>>> m_ptr;
 public:
     DenseMatrix();
@@ -27,7 +26,8 @@ public:
     DenseMatrix<T> Transpose();
     std::shared_ptr<std::vector<std::vector<T>>> GetMatrix();
 private:
-    void UnityMatrix(unsigned , unsigned , const T &);
+    inline void UnityMatrix(unsigned, unsigned, const T &);
+    inline void CopyFromMat(std::vector<std::vector<T>>);
 };
 
 } // Matrix
