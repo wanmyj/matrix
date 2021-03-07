@@ -90,36 +90,23 @@ void DenseMatrix<T>::CopyFromMat(std::vector<std::vector<T>> aVec)
 template <typename T>
 DenseMatrix<T> DenseMatrix<T>::Transpose()
 {
-    DenseMatrix result(m_rows, m_cols, 0.0);
+    std::shared_ptr<std::vector<std::vector<T>>> resMat;
+    (*resMat).resize(m_cols);
+    for (unsigned i = 0; i < (*resMat).size(); i++) {
+        (*resMat)[i].resize(m_rows);
+    }
 
-    for (unsigned i = 0; i < m_rows; i++)
-    {
-        for (unsigned j = 0; j < m_cols; j++)
-        {
-            result(i, j) = this->(*m_ptr)[j][i];
+    for (unsigned i = 0; i < m_rows; i++) {
+        for (unsigned j = 0; j < m_cols; j++) {
+            (*resMat)[j][i] = (*m_ptr)[i][j];
         }
     }
 
-    return result;
+    m_ptr = resMat;
+    m_cols = m_rows;
+    m_rows = (*m_ptr).size();
+    return *this;
 }
-
-// Multiply a matrix with a vector
-template <typename T>
-std::vector<T> DenseMatrix<T>::operator*(const std::vector<T> &rhs)
-{
-    std::vector<T> result(rhs.size(), 0.0);
-
-    for (unsigned i = 0; i < m_rows; i++)
-    {
-        for (unsigned j = 0; j < m_cols; j++)
-        {
-            result[i] = this->(*m_ptr)[i][j] * rhs[j];
-        }
-    }
-
-    return result;
-}
-
 
 template <typename T>
 std::shared_ptr<std::vector<std::vector<T>>> DenseMatrix<T>::GetMatrix()
