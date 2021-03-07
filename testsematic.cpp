@@ -75,18 +75,30 @@ public:
 //     return PE<X>(A, B);
 // }
 
-template <typename F, typename T>
-inline auto operator*(BM<T> A, BM<F> B) {
-    return PE<float>(A, B);
-}
-template <typename T>
-inline auto operator*(BM<T> A, BM<T> B) {
-    return PE<T>(A, B);
-}
+// template <typename F, typename T>
+// inline auto operator*(BM<T> A, BM<F> B) {
+//     return PE<float>(A, B);
+// }
+// template <typename T>
+// inline auto operator*(BM<T> A, BM<T> B) {
+//     return PE<T>(A, B);
+// }
 
 template <typename T, typename F>
 inline PE<T> operator+(BM<T> A, BM<F> B) {
     return PE<T>(A, B);
+}
+
+
+std::shared_ptr<std::vector<std::vector<int>>> m_ptr;
+
+
+void UnityMatrix(unsigned rows, unsigned cols, const int &init)
+{
+    (*m_ptr).resize(rows);
+    for (unsigned i = 0; i < (*m_ptr).size(); i++) {
+        (*m_ptr)[i].resize(cols, init);
+    }
 }
 
 // 传一个 A是int B是float 看C是啥
@@ -100,8 +112,11 @@ int main() {
     PE<float> F = B + B; //ok
     cout << "--------------" << endl;
     // PE<float> G = A * B; // not ok
-    A * B; // not ok
-    A * A; // not ok
+    // A * B; // not ok
+    // A * A; // not ok
+
+    m_ptr = std::make_shared<std::vector<std::vector<int>>>();
+    UnityMatrix(1, 1, 1);
 
     cin.get();
     return 0;

@@ -9,7 +9,7 @@ template <typename T>
 class DenseMatrix : public BaseMatrix<T>
 {
 private:
-    std::shared_ptr<std::vector<std::vector<T>>> m_ptr;
+    std::vector<std::vector<T>> m_mat;
 public:
     DenseMatrix();
     DenseMatrix(std::initializer_list<std::initializer_list<T>> init);

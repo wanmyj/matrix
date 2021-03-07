@@ -13,7 +13,7 @@ protected:
     unsigned m_cols;
 
 public:
-    BaseMatrix() : m_rows(0), m_cols(0) {};
+    BaseMatrix() : m_rows(1), m_cols(1) {};
     BaseMatrix(const BaseMatrix<T> &rhs); //copy contrructor
     BaseMatrix(BaseMatrix<T> &&rhs) = default;      //move contrructor
     virtual ~BaseMatrix();
