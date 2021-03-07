@@ -18,16 +18,16 @@ public:
     virtual ~DenseMatrix() = default;
 
     // Assignment operator overloading
-    DenseMatrix<T> &operator=(const ProductExpr<T> &rhs);
-    DenseMatrix<T> &operator=(const BaseMatrix<T> &rhs);
-    DenseMatrix<T> &operator=(const DenseMatrix<T> &rhs);
-    DenseMatrix<T> &operator=(DenseMatrix<T> &&rhs) = default;
+    DenseMatrix<T>& operator=(const ProductExpr<T> &rhs);
+    DenseMatrix<T>& operator=(const BaseMatrix<T> &rhs);
+    DenseMatrix<T>& operator=(const DenseMatrix<T> &rhs);
+    DenseMatrix<T>& operator=(DenseMatrix<T> &&rhs) = default;
 
-    DenseMatrix<T> Transpose();
-    std::shared_ptr<std::vector<std::vector<T>>> GetMatrix();
+    DenseMatrix<T>& Transpose();
+    std::shared_ptr<std::vector<std::vector<T>>> GetMatrix() const;
 private:
     inline void UnityMatrix(unsigned, unsigned, const T &);
-    inline void CopyFromMat(std::vector<std::vector<T>>);
+    inline void CopyFromMat(const std::vector<std::vector<T>>&);
 };
 
 } // Matrix

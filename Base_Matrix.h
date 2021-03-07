@@ -22,7 +22,7 @@ public:
     virtual BaseMatrix<T>& operator=(const BaseMatrix<T> &rhs);
     virtual BaseMatrix<T>& operator=(BaseMatrix<T> &&rhs);
 
-    virtual BaseMatrix<T>& Transpose();
+    virtual BaseMatrix<T>& Transpose() = 0;
 
     // Access the individual elements
     // virtual std::vector<T>& operator[](const unsigned &row) = 0;
@@ -33,7 +33,7 @@ public:
     unsigned get_cols() const;
 
     // Get the full matrix
-    virtual std::shared_ptr<std::vector<std::vector<T>>> GetMatrix() = 0;
+    virtual std::shared_ptr<std::vector<std::vector<T>>> GetMatrix() const = 0;
 };
 
 } // Matrix
