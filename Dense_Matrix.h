@@ -15,7 +15,11 @@ public:
     DenseMatrix(std::initializer_list<std::initializer_list<T>> init);
     DenseMatrix(const ProductExpr<T> &rhs); //copy constructor
     DenseMatrix(const DenseMatrix<T> &rhs); //copy constructor
-    DenseMatrix(DenseMatrix<T> &&rhs) = default;      //move contrructor
+    template <typename F>
+    DenseMatrix(const ProductExpr<F> &rhs); //copy constructor
+    template <typename F>
+    DenseMatrix(const DenseMatrix<F> &rhs); //copy constructor
+    DenseMatrix(DenseMatrix<T> &&rhs) = default;      //move constructor
     virtual ~DenseMatrix() = default;
 
     // Assignment operator overloading

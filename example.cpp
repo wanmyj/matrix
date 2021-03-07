@@ -20,8 +20,23 @@ int main() {
     cout << "print d" << endl;
     d.PrintMat();
 
-    std::shared_ptr<std::vector<std::vector<int>>> x = a.GetMatrix();
-    cout << (*x).at(0).at(0) << endl;
+    DenseMatrix<double> f = b * c;
+    cout << "print f" << endl;
+    f.PrintMat();
+
+    f.Transpose();
+    cout << "print f Tranpose" << endl;
+    f.PrintMat();
+
+    DenseMatrix<int> g{{1, 2, 3},{3, 2, 1}, {2, 2, 2}};
+    DenseMatrix<float> h{{1.2},{3.7, 1}, {2, 2}};
+    DenseMatrix<int> i{{1},{3}};
+    DenseMatrix<float> k{{2.34}};
+
+    cout << "print f = g * h * i * k" << endl;
+    f = g * h * i * k;
+    f.PrintMat();
+
     cin.get();
     return 0;
 }

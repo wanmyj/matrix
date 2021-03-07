@@ -20,7 +20,7 @@ public:
     template <typename F, typename E>
     ProductExpr(const BaseMatrix<E> &lhs, const BaseMatrix<F> &rhs)
     {
-        std::shared_ptr<std::vector<std::vector<T>>> lmat = lhs.GetMatrix();
+        std::shared_ptr<std::vector<std::vector<E>>> lmat = lhs.GetMatrix();
         unsigned lrow = lhs.get_rows();
         unsigned lcol = lhs.get_cols();
 
@@ -70,7 +70,7 @@ public:
     template <typename F, typename E>
     ProductExpr(const BaseMatrix<F> &lhs, const ProductExpr<E> &rhs)
     {
-        std::shared_ptr<std::vector<std::vector<T>>> lmat = lhs.GetMatrix();
+        std::shared_ptr<std::vector<std::vector<F>>> lmat = lhs.GetMatrix();
         unsigned lrow = lhs.get_rows();
         unsigned lcol = lhs.get_cols();
 

@@ -39,36 +39,36 @@ type_name()
 
 using namespace std;
 
-template <typename T>
-class BM
-{
-public:
-    BM(T in) : a(in) {}
-    T a;
-};
+// template <typename T>
+// class BM
+// {
+// public:
+//     BM(T in) : a(in) {}
+//     T a;
+// };
 
-template <typename T>
-class PE
-{
-public:
-    // template <typename F>
-    // PE(BM<T> A, BM<F> B) {
-    //     C = A.a + B.a;
-    //     cout <<  type_name<decltype(A)>() << endl;
-    //     cout <<  type_name<decltype(B)>() << endl;
-    //     cout <<  type_name<decltype(C)>() << endl;
-    // }
+// template <typename T>
+// class PE
+// {
+// public:
+//     // template <typename F>
+//     // PE(BM<T> A, BM<F> B) {
+//     //     C = A.a + B.a;
+//     //     cout <<  type_name<decltype(A)>() << endl;
+//     //     cout <<  type_name<decltype(B)>() << endl;
+//     //     cout <<  type_name<decltype(C)>() << endl;
+//     // }
 
-    template <typename F, typename E>
-    PE(BM<E> A, BM<F> B) {
-        C = A.a + B.a;
-        cout << type_name<decltype(A)>() << endl;
-        cout << type_name<decltype(B)>() << endl;
-        cout << type_name<decltype(C)>() << endl;
-    }
+//     template <typename F, typename E>
+//     PE(BM<E> A, BM<F> B) {
+//         C = A.a + B.a;
+//         cout << type_name<decltype(A)>() << endl;
+//         cout << type_name<decltype(B)>() << endl;
+//         cout << type_name<decltype(C)>() << endl;
+//     }
 
-    T C;
-};
+//     T C;
+// };
 
 // template <typename X, typename F, typename T>
 // inline PE<X> operator*(BM<T> A, BM<F> B) {
@@ -84,39 +84,29 @@ public:
 //     return PE<T>(A, B);
 // }
 
-template <typename T, typename F>
-inline PE<T> operator+(BM<T> A, BM<F> B) {
-    return PE<T>(A, B);
-}
+// template <typename T, typename F>
+// inline PE<T> operator+(BM<T> A, BM<F> B) {
+//     return PE<T>(A, B);
+// }
 
 
-std::shared_ptr<std::vector<std::vector<int>>> m_ptr;
-
-
-void UnityMatrix(unsigned rows, unsigned cols, const int &init)
-{
-    (*m_ptr).resize(rows);
-    for (unsigned i = 0; i < (*m_ptr).size(); i++) {
-        (*m_ptr)[i].resize(cols, init);
-    }
-}
 
 // 传一个 A是int B是float 看C是啥
 int main() {
-    BM<int> A(1);
-    BM<float> B(1.f);
-    // PE<int> C(A, B);
-    PE<double> C(A, B); // OK
-    PE<int> D(A, B); //OK
-    PE<int> E = A + B; //ok
-    PE<float> F = B + B; //ok
+    // BM<int> A(1);
+    // BM<float> B(1.f);
+    // // PE<int> C(A, B);
+    // PE<double> C(A, B); // OK
+    // PE<int> D(A, B); //OK
+    // PE<int> E = A + B; //ok
+    // PE<float> F = B + B; //ok
+    vector<int> a{2, 0};
+    vector<int> b(a);
+    vector<double> c(a);
     cout << "--------------" << endl;
     // PE<float> G = A * B; // not ok
     // A * B; // not ok
     // A * A; // not ok
-
-    m_ptr = std::make_shared<std::vector<std::vector<int>>>();
-    UnityMatrix(1, 1, 1);
 
     cin.get();
     return 0;

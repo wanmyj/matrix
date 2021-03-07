@@ -59,7 +59,7 @@ void BaseMatrix<T>::PrintMat() const
     std::cout << "Mat = " << std::endl;
     for (auto rows : (*mat)) {
         for (auto it : rows) {
-            std::cout << it;
+            std::cout << it << ' ';
         }
         std::cout << std::endl;
     }
