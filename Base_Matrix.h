@@ -3,6 +3,7 @@
 
 #include "Product_Expr.h"
 #include <memory>
+#include <iostream>
 namespace Matrix {
 
 template <typename T>
@@ -34,6 +35,7 @@ public:
 
     // Get the full matrix
     virtual std::shared_ptr<std::vector<std::vector<T>>> GetMatrix() const = 0;
+    void PrintMat() const;
 };
 
 } // Matrix

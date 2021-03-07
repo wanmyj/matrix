@@ -53,6 +53,21 @@ BaseMatrix<T>& BaseMatrix<T>::operator=(BaseMatrix<T> &&rhs)
 
 // Get the number of m_rows of the matrix
 template <typename T>
+void BaseMatrix<T>::PrintMat() const
+{
+    std::shared_ptr<std::vector<std::vector<T>>> mat = GetMatrix();
+    std::cout << "Mat = " << std::endl;
+    for (auto rows : (*mat)) {
+        for (auto it : rows) {
+            std::cout << it;
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
+    return;
+}
+
+template <typename T>
 unsigned BaseMatrix<T>::get_rows() const
 {
     return this->m_rows;

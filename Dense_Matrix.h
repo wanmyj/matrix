@@ -13,7 +13,8 @@ private:
 public:
     DenseMatrix();
     DenseMatrix(std::initializer_list<std::initializer_list<T>> init);
-    DenseMatrix(const DenseMatrix<T> &rhs); //copy contrructor
+    DenseMatrix(const ProductExpr<T> &rhs); //copy constructor
+    DenseMatrix(const DenseMatrix<T> &rhs); //copy constructor
     DenseMatrix(DenseMatrix<T> &&rhs) = default;      //move contrructor
     virtual ~DenseMatrix() = default;
 

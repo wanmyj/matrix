@@ -12,6 +12,19 @@ DenseMatrix<T>::DenseMatrix()
     UnityMatrix(BaseMatrix<T>::m_rows, BaseMatrix<T>::m_cols, 0);
 }
 
+template <typename T>
+DenseMatrix<T>::DenseMatrix(const DenseMatrix<T> &rhs)
+{
+    BaseMatrix<T>::operator=(rhs);
+    CopyFromMat(*rhs.GetMatrix());
+}
+
+template <typename T>
+DenseMatrix<T>::DenseMatrix(const ProductExpr<T> &rhs)
+{
+    CopyFromMat(rhs.m_mat);
+}
+
 // Parameter Constructor
 template <typename T>
 DenseMatrix<T>::DenseMatrix
