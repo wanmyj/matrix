@@ -134,8 +134,8 @@ public:
 template <typename T>
 inline ProductExpr<T> operator*(const BaseMatrix<T> &lhs, BaseMatrix<T> &rhs)
 {
-    if ( lhs.get_cols() != rhs.get_rows()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.get_cols() != rhs.get_rows()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<T>(lhs, rhs);
 }
@@ -145,8 +145,8 @@ template <typename T, typename F>
 inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs, 
     BaseMatrix<F> &rhs)
 {
-    if ( lhs.get_cols() != rhs.get_rows()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.get_cols() != rhs.get_rows()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<double>(lhs, rhs);
 }
@@ -155,8 +155,8 @@ inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs,
 template <typename T>
 inline ProductExpr<T> operator*(const ProductExpr<T> &lhs, BaseMatrix<T> &rhs)
 {
-    if ( lhs.m_mat[0].size() != rhs.get_rows()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.m_mat[0].size() != rhs.get_rows()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<T>(lhs, rhs);
 }
@@ -166,8 +166,8 @@ template <typename T, typename F>
 inline ProductExpr<double> operator*(const ProductExpr<T> &lhs, 
     BaseMatrix<F> &rhs)
 {
-    if ( lhs.m_mat[0].size() != rhs.get_rows()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.m_mat[0].size() != rhs.get_rows()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<double>(lhs, rhs);
 }
@@ -176,8 +176,8 @@ inline ProductExpr<double> operator*(const ProductExpr<T> &lhs,
 template <typename T>
 inline ProductExpr<T> operator*(const BaseMatrix<T> &lhs, ProductExpr<T> &rhs)
 {
-    if ( lhs.get_cols() != rhs.m_mat.size()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.get_cols() != rhs.m_mat.size()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<T>(lhs, rhs);
 }
@@ -187,8 +187,8 @@ template <typename T, typename F>
 inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs, 
     ProductExpr<F> &rhs)
 {
-    if ( lhs.get_cols() != rhs.m_mat.size()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.get_cols() != rhs.m_mat.size()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<double>(lhs, rhs);
 }
@@ -197,8 +197,8 @@ inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs,
 template <typename T>
 inline ProductExpr<T> operator*(const ProductExpr<T> &lhs, ProductExpr<T> &rhs)
 {
-    if ( lhs.m_mat[0].size() != rhs.m_mat.size()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.m_mat[0].size() != rhs.m_mat.size()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<T>(lhs, rhs);
 }
@@ -208,8 +208,8 @@ template <typename T, typename F>
 inline ProductExpr<double> operator*(const ProductExpr<T> &lhs, 
     ProductExpr<F> &rhs)
 {
-    if ( lhs.m_mat[0].size() != rhs.m_mat.size()) {
-        throw std::invalid_argument( "two matrices are NOT multipliable" );
+    if (lhs.m_mat[0].size() != rhs.m_mat.size()) {
+        throw std::invalid_argument( "two matrices are NOT multipliable");
     }
     return ProductExpr<double>(lhs, rhs);
 }

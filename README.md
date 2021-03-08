@@ -130,3 +130,8 @@ Mat =
 58.5 
 74.412 
 ```
+
+## Reference
+<https://www.quantstart.com/articles/Matrix-Classes-in-C-The-Header-File/>
+
+<https://www.quantstart.com/articles/Matrix-Classes-in-C-The-Source-File/>
