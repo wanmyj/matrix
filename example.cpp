@@ -34,8 +34,43 @@ int main() {
     DenseMatrix<float> k{{2.34}};
 
     cout << "print f = g * h * i * k" << endl;
-    f = g * h * i * k;
+    f = g * h * 3 * i * k;
     f.PrintMat();
+
+    a = 3 * b;
+    a = b * 3;
+    a = 3 * b * 3;
+    cout << "print a = 3 * b * 3" << endl;
+    a.PrintMat();
+    a = 3 * (b * 3);
+    cout << "print a = 3 * (b * 3)" << endl;
+    a.PrintMat();
+
+    f = 3 * b;
+    f = b * 3;
+    f = 3 * b * 3;
+    cout << "print f = 3 * b * 3" << endl;
+    f.PrintMat();
+    f = 3 * (b * 3);    
+    cout << "print f = 3 * (b * 3)" << endl;
+    f.PrintMat();
+
+    f = 3 * h;
+    f = h * 3;
+    f = 3 * h * 3;
+    cout << "print f = 3 * h * 3" << endl;
+    f.PrintMat();
+    f = 3 * (h * 3);    
+    cout << "print f = 3 * (h * 3)" << endl;
+    f.PrintMat();
+    
+    try {
+        f = f * f.Transpose(); //this is wrong
+        cout << "f = f * f.Transpose()" << endl;
+        f.PrintMat();
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 
     cin.get();
     return 0;
