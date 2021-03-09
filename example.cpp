@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Dense_Matrix.h>
+#include <Diag_Matrix.h>
 
 using namespace Matrix;
 using namespace std;
@@ -71,6 +72,38 @@ int main() {
     } catch(const std::exception& e) {
         std::cerr << e.what() << '\n';
     }
+
+    cout << "-----------------------" << endl;
+    DiagMatrix<int> da{1, 2, 3};
+    cout << "print da{1, 2, 3}" << endl;
+    da.PrintMat();
+
+    vector<int> v{1, 2, 3};
+    DiagMatrix<int> db{v};
+    cout << "print db{v}" << endl;
+    db.PrintMat();
+
+    DiagMatrix<int> dc = da * db;
+    cout << "print dc{v}" << endl;
+    dc.PrintMat();
+
+    vector<float> v2{1, 2.02, 3};
+    DiagMatrix<float> df{v2};
+    DiagMatrix<double> dd = da * df;
+    cout << "print dc{v}" << endl;
+    dd.PrintMat();
+
+    f = b * dd;
+    cout << "print f = b * dd" << endl;
+    f.PrintMat();
+
+    f = da * 3.6;
+    cout << "print f = da * 3.6" << endl;
+    f.PrintMat();
+
+    f = 4.8 * da;
+    cout << "print f = 4.8 * da" << endl;
+    f.PrintMat();
 
     cin.get();
     return 0;

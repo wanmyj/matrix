@@ -12,8 +12,7 @@ DiagMatrix<T>::DiagMatrix()
 
 template <typename T>
 DiagMatrix<T>::DiagMatrix(std::vector<T> init)
-:   BaseMatrix<T>::m_rows(init.size()),
-    BaseMatrix<T>::m_cols(init.size()),
+:   BaseMatrix<T>(init.size(), init.size()),
     m_mat(init)
 {}
 
@@ -24,8 +23,7 @@ DiagMatrix<T>::DiagMatrix(std::initializer_list<T> init)
     unsigned rows = init.size();
     m_mat.resize(rows);
 
-    for (size_t i = 0; i < rows; i++)
-    {
+    for (size_t i = 0; i < rows; i++) {
         m_mat[i] = *(init.begin() + i);
     }
 
@@ -57,7 +55,7 @@ DiagMatrix<T>::DiagMatrix(const DiagMatrix<T> &rhs)
 
 // Multiplication operator overloading
 template <typename T>
-DiagMatrix<T>& DiagMatrix<T>::operator*(const DiagMatrix<T> &rhs)
+DiagMatrix<T> DiagMatrix<T>::operator*(const DiagMatrix<T> &rhs)
 {
     if (this->get_rows() != rhs.get_rows()) {
         throw std::invalid_argument( "two diag matrices are NOT multipliable");
@@ -72,7 +70,7 @@ DiagMatrix<T>& DiagMatrix<T>::operator*(const DiagMatrix<T> &rhs)
 
 template <typename T>
 template <typename F>
-DiagMatrix<double>& DiagMatrix<T>::operator*(const DiagMatrix<F> &rhs)
+DiagMatrix<double> DiagMatrix<T>::operator*(const DiagMatrix<F> &rhs)
 {
     if (this->get_rows() != rhs.get_rows()) {
         throw std::invalid_argument( "two diag matrices are NOT multipliable");
@@ -103,7 +101,7 @@ std::shared_ptr<std::vector<std::vector<T>>> DiagMatrix<T>::GetMatrix() const
     std::shared_ptr<std::vector<std::vector<T>>>
         res(new std::vector<std::vector<T>>(i, std::vector<T>(i, 0)));
     for (size_t j = 0; j < i; j++) {
-        res[j][j] = GetElement(j);
+        (*res)[j][j] = GetElement(j);
     }
     
     return res;
@@ -113,6 +111,34 @@ template <typename T>
 T DiagMatrix<T>::GetElement(const unsigned &order) const
 {
     return m_mat.at(order);
+}
+
+
+// Type Diff Scalar/DiagMatrix operations
+template <typename T, typename F,
+    typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+DiagMatrix<double> operator*(const F &lhs, const DiagMatrix<T> &rhs)
+{
+    unsigned rows = rhs.get_cols();
+
+    std::vector<double> res(rows, 0);
+    for (unsigned i = 0; i < rows; i++) {
+        res[i] = rhs.GetElement(i) * lhs;
+    }
+    return DiagMatrix<double>(res);
+}
+
+// Type Same DiagMatrix/Scalar operations
+template <typename T>
+DiagMatrix<T> operator*(const DiagMatrix<T> &lhs, const T &rhs)
+{
+    unsigned rows = lhs.get_cols();
+
+    std::vector<double> res(rows, 0);
+    for (unsigned i = 0; i < rows; i++) {
+        res[i] = lhs.GetElement(i) * rhs;
+    }
+    return DiagMatrix<double>(res);
 }
 
 } // Matrix

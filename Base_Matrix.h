@@ -15,8 +15,9 @@ protected:
 
 public:
     BaseMatrix() : m_rows(1), m_cols(1) {};
+    BaseMatrix(unsigned arg1, unsigned arg2) : m_rows(arg1), m_cols(arg2) {};
     BaseMatrix(const BaseMatrix<T> &rhs); //copy contrructor
-    BaseMatrix(BaseMatrix<T> &&rhs) = default;      //move contrructor
+    BaseMatrix(BaseMatrix<T> &&rhs) noexcept = default;      //move contrructor
     virtual ~BaseMatrix();
 
     // Operator overloading, for "standard" mathematical matrix operations
@@ -50,6 +51,7 @@ public:
 // 
 // GetMatrix()必须重载 返回一个智能指针，指向一片堆内存
 // Transpose必须重载
+// 不同数据类型的copy构造函数的重载
 // 同种类矩阵相乘，派生类与数字乘法的结果可以重载，不重载只返回DenseMatrix
 // mat[][] 修改元素 只有DENSE SPARSE允许 DIAG触发exception （暂时不实现）
 //      https://stackoverflow.com/questions/24609872/delete-virtual-function-from-a-derived-class

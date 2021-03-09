@@ -283,7 +283,8 @@ ProductExpr<T> operator*(const T &lhs, const BaseMatrix<T> &rhs)
 }
 
 // Type Diff ProductExpr/Scalar operations
-template <typename T, typename F, typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+template <typename T, typename F,
+    typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
 ProductExpr<double> operator*(const ProductExpr<T> &lhs, const F &rhs)
 {
     unsigned rows = lhs.m_mat.size();
@@ -299,7 +300,8 @@ ProductExpr<double> operator*(const ProductExpr<T> &lhs, const F &rhs)
 }
 
 // Type Diff Scalar/ProductExpr operations
-template <typename T, typename F, typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+template <typename T, typename F,
+    typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
 ProductExpr<double> operator*(const F &lhs, const ProductExpr<T> &rhs)
 {
     unsigned rows = rhs.m_mat.size();

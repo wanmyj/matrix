@@ -20,7 +20,7 @@ public:
     DenseMatrix(const ProductExpr<F> &rhs); //copy constructor
     template <typename F>
     DenseMatrix(const DenseMatrix<F> &rhs); //copy constructor
-    DenseMatrix(DenseMatrix<T> &&rhs) = default;      //move constructor
+    DenseMatrix(DenseMatrix<T> &&rhs) noexcept = default;      //move constructor
     virtual ~DenseMatrix() = default;
 
     // Assignment operator overloading
