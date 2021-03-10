@@ -39,9 +39,18 @@ template <typename T, typename F,
     typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
 DiagMatrix<double> operator*(const F &lhs, const DiagMatrix<T> &rhs);
 
+// Type Diff DiagMatrix/Scalar operations
+template <typename T, typename F,
+    typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+DiagMatrix<double> operator*(const DiagMatrix<T> &lhs, const F &rhs);
+
 // Type Same DiagMatrix/Scalar operations
 template <typename T>
 DiagMatrix<T> operator*(const DiagMatrix<T> &lhs, const T &rhs);
+
+// Type Same Scalar/DiagMatrix operations
+template <typename T>
+DiagMatrix<T> operator*(const T &lhs, const DiagMatrix<T> &rhs);
 
 } // Matrix
 

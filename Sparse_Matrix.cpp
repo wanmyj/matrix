@@ -267,11 +267,11 @@ template <typename E, typename F,
     typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
 SparseMatrix<double> operator*(const F &lhs, const SparseMatrix<E> &rhs)
 {
-    std::vector<std::vector<unsigned>> rows = rhs.GetRowsVec();
-    std::vector<std::vector<unsigned>> cols = rhs.GetColsVec();
-    std::vector<std::vector<E>> vals = rhs.GetValsVec();
+    std::vector<unsigned> rows = rhs.GetRowsVec();
+    std::vector<unsigned> cols = rhs.GetColsVec();
+    std::vector<E> vals = rhs.GetValsVec();
     std::vector<double> valNew(cols.size(), 0);
-    for (size_t i = 0; i < rhs.m_elementNums; i++) {
+    for (size_t i = 0; i < cols.size(); i++) {
         valNew[i] = vals[i] * lhs;
     }
     return {rhs.get_rows(), rhs.get_cols(), rows, cols, valNew};

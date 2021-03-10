@@ -26,6 +26,30 @@ int main() {
     cout << "print Dc" << endl;
     Dc.PrintMat();
 
+    // dense matrix transpose
+    Db.Transpose();
+    cout << "print Db transpose" << endl;
+    Db.PrintMat();
+
+    // dense matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
+    cout << "dense matrix multiply\n" << endl;
+    DenseMatrix<int> Di = Db * 3;
+    cout << "print Di = Db * 3" << endl;
+    Di.PrintMat();
+
+    Di = 3 * Di;
+    cout << "print Di = 3 * Di" << endl;
+    Di.PrintMat();
+
+    DenseMatrix<double> Dj = Dc * 3;
+    cout << "print Dj = Dc * 3" << endl;
+    Dj.PrintMat();
+
+    Dj = 3.1 * Da;
+    cout << "print Dj = 3.1 * Da" << endl;
+    Dj.PrintMat();
+
+
     // diag matrix initialization (vector initializer_list)
     cout << "diag matrix initialization" << endl;
     DiagMatrix<int> da{1, 2, 3};
@@ -36,6 +60,30 @@ int main() {
     DiagMatrix<float> db{dvb};
     cout << "print db{dvb}" << endl;
     db.PrintMat();
+
+    // diag matrix transpose
+    db.Transpose();
+    cout << "print db transpose" << endl;
+    db.PrintMat();
+
+    // diag matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
+    cout << "diag matrix multiply\n" << endl;
+
+    DiagMatrix<int> di = da * 5;
+    cout << "print di = da * 5" << endl;
+    di.PrintMat();
+    
+    di = 12 * di;
+    cout << "print di = 12 * di" << endl;
+    di.PrintMat();
+
+    DiagMatrix<double> dj = da * 1.3;
+    cout << "print di = da * 5" << endl;
+    dj.PrintMat();
+
+    dj = db * 1.3;
+    cout << "print dj = db * 1.3" << endl;
+    dj.PrintMat();
 
     // sparse matrix initialization (vector initializer_list)
     cout << "sparse matrix initialization" << endl;
@@ -51,26 +99,29 @@ int main() {
     cout << "print sb" << endl;
     sb.PrintMat();
 
-    // dense matrix transpose
-    // diag matrix transpose
     // sparse matrix transpose
-    cout << "matrix transpose" << endl;
-
+    cout << "matrix transpose\n" << endl;
     sb.Transpose();
     cout << "print sb transpose" << endl;
     sb.PrintMat();
 
-    db.Transpose();
-    cout << "print db transpose" << endl;
-    db.PrintMat();
-
-    Db.Transpose();
-    cout << "print Db transpose" << endl;
-    Db.PrintMat();
-
-    // dense matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
-    // diag matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
     // sparse matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
+    cout << "diag matrix multiply\n" << endl;
+    SparseMatrix<int> si = sa * 3;
+    cout << "print si = sa * 3" << endl;
+    si.PrintMat();
+
+    si = 4 * si;
+    cout << "print si = 4 * si" << endl;
+    si.PrintMat();
+
+    SparseMatrix<double> sj = sb * 3;
+    cout << "print sj = sb * 3" << endl;
+    sj.PrintMat();
+
+    sj = 2.7 * sa;
+    cout << "print sj = 2.7 * sa" << endl;
+    sj.PrintMat();
 
     // dense(T/double) = scalar * (sparse * scalar)
     // dense(T/double) = scalar * (diag * scalar)
