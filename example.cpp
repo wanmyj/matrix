@@ -145,13 +145,13 @@ int main() {
 
     // exception test
     cout << "-----------------------" << endl;
-    // try {
-    //     f = f * f.Transpose(); //this is wrong
-    //     cout << "f = f * f.Transpose()" << endl;
-    //     f.PrintMat();
-    // } catch(const std::exception& e) {
-    //     std::cerr << e.what() << '\n';
-    // }
+    try {
+        Dc = Dc * Dc.Transpose(); //this is wrong
+        cout << "Dc = Dc * Dc.Transpose()" << endl;
+        Dc.PrintMat();
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
     cin.get();
     return 0;
 }
