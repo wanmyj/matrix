@@ -1,10 +1,28 @@
 #include <iostream>
 #include <Dense_Matrix.h>
 #include <Diag_Matrix.h>
+#include <Sparse_Matrix.h>
 
 using namespace Matrix;
 using namespace std;
 int main() {
+    // dense matrix initialization (vector initializer_list)
+    // diag matrix initialization (vector initializer_list)
+    // sparse matrix initialization (vector initializer_list)
+
+    // dense matrix transpose
+    // diag matrix transpose
+    // sparse matrix transpose
+
+    // dense matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
+    // diag matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
+    // sparse matrix multiply (Tscalar * Tmatrix, Tscalar * Fmatrix, Tmatrix * Tmatrix, Tmatrix * Fmatrix)
+
+    // dense(T/double) = scalar * (sparse * scalar)
+    // dense(T/double) = scalar * (diag * scalar)
+    // dense(T/double) = diag * (scalar * (diag * scalar) * sparse.transpose)
+
+    // exception test
     DenseMatrix<int> a{{1}};
     cout << "print a" << endl;
     a.PrintMat();
@@ -90,7 +108,7 @@ int main() {
     vector<float> v2{1, 2.02, 3};
     DiagMatrix<float> df{v2};
     DiagMatrix<double> dd = da * df;
-    cout << "print dc{v}" << endl;
+    cout << "print dd{v}" << endl;
     dd.PrintMat();
 
     f = b * dd;
@@ -105,6 +123,28 @@ int main() {
     cout << "print f = 4.8 * da" << endl;
     f.PrintMat();
 
+    f = 4.8 * da * dc;
+    cout << "print f = 4.8 * da * dc" << endl;
+    f.PrintMat();
+
+    cout << "-----------------------" << endl;
+
+    SparseMatrix<int> sa{3, 4, {{1, 2,3}, {2, 2, 4}}};
+    cout << "print sa" << endl;
+    sa.PrintMat();
+
+    SparseMatrix<float> sb{4, 3, {{1, 2,3.2}, {2, 2, 4}, {2, 3, 0}}};
+    cout << "print sb" << endl;
+    sb.PrintMat();
+
+    DenseMatrix<double> sc = sa * sb;
+    cout << "print sc = sa * sb" << endl;
+    sc.PrintMat();
+
+    SparseMatrix<int> se = sa;
+    DenseMatrix<int> sd = se * sa.Transpose();
+    cout << "print sd = sa * sa.Transpose()" << endl;
+    sd.PrintMat();
     cin.get();
     return 0;
 }

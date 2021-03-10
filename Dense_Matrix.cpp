@@ -17,7 +17,7 @@ template <typename F>
 DenseMatrix<T>::DenseMatrix(const DenseMatrix<F> &rhs)
 {
     BaseMatrix<T>::operator=(rhs);
-    std::vector<std::vector<F>> aVec= *(rhs.GetMatrix());
+    std::vector<std::vector<F>> aVec = *(rhs.GetMatrix());
     BaseMatrix<T>::m_rows = aVec.size();
     BaseMatrix<T>::m_cols = aVec[0].size();
     m_mat.resize(BaseMatrix<T>::m_rows);
@@ -36,7 +36,7 @@ template <typename T>
 template <typename F>
 DenseMatrix<T>::DenseMatrix(const ProductExpr<F> &rhs)
 {
-    std::vector<std::vector<F>> aVec= rhs.m_mat;
+    std::vector<std::vector<F>> aVec = rhs.m_mat;
     BaseMatrix<T>::m_rows = aVec.size();
     BaseMatrix<T>::m_cols = aVec[0].size();
     m_mat.resize(BaseMatrix<T>::m_rows);
@@ -153,7 +153,6 @@ void DenseMatrix<T>::CopyFromMat(const std::vector<std::vector<T>> &aVec)
     }
 }
 
-
 // Calculate a transpose of this matrix
 template <typename T>
 DenseMatrix<T>& DenseMatrix<T>::Transpose()
@@ -183,13 +182,6 @@ std::shared_ptr<std::vector<std::vector<T>>> DenseMatrix<T>::GetMatrix() const
         res(new std::vector<std::vector<T>>(m_mat));
     return res;
 }
-
-// // Access the individual elements
-// template <typename T>
-// std::vector<T> &DenseMatrix<T>::operator[](const unsigned &row)
-// {
-//     return this->(*m_ptr);
-// }
 
 template <typename T>
 void DenseMatrix<T>::UnityMatrix(unsigned rows, unsigned cols, const T &init)

@@ -16,8 +16,8 @@ public:
     DiagMatrix(std::initializer_list<T> init);
     template <typename F>
     DiagMatrix(const DiagMatrix<F> &rhs);
-    DiagMatrix(const DiagMatrix<T> &rhs);           //copy constructor
-    DiagMatrix(DiagMatrix<T> &&rhs) noexcept = default;      //move constructor
+    DiagMatrix(const DiagMatrix<T> &rhs);               // copy constructor
+    DiagMatrix(DiagMatrix<T> &&rhs) noexcept = default; // move constructor
     virtual ~DiagMatrix() = default;
 
     // Multiplication operator overloading

@@ -16,8 +16,8 @@ protected:
 public:
     BaseMatrix() : m_rows(1), m_cols(1) {};
     BaseMatrix(unsigned arg1, unsigned arg2) : m_rows(arg1), m_cols(arg2) {};
-    BaseMatrix(const BaseMatrix<T> &rhs); //copy contrructor
-    BaseMatrix(BaseMatrix<T> &&rhs) noexcept = default;      //move contrructor
+    BaseMatrix(const BaseMatrix<T> &rhs);               // copy contrructor
+    BaseMatrix(BaseMatrix<T> &&rhs) noexcept = default; // move contrructor
     virtual ~BaseMatrix();
 
     // Operator overloading, for "standard" mathematical matrix operations
@@ -25,10 +25,6 @@ public:
     virtual BaseMatrix<T>& operator=(BaseMatrix<T> &&rhs);
 
     virtual BaseMatrix<T>& Transpose() = 0;
-
-    // Access the individual elements
-    // virtual std::vector<T>& operator[](const unsigned &row) = 0;
-    // virtual const std::vector<T>& operator[](const unsigned &row) const;
 
     // Access the row and column sizes
     unsigned get_rows() const;

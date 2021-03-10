@@ -8,13 +8,11 @@ namespace Matrix
 
 template <typename T>
 DiagMatrix<T>::DiagMatrix()
-: m_mat(1, 0) {}
+    : m_mat(1, 0) {}
 
 template <typename T>
 DiagMatrix<T>::DiagMatrix(std::vector<T> init)
-:   BaseMatrix<T>(init.size(), init.size()),
-    m_mat(init)
-{}
+    : BaseMatrix<T>(init.size(), init.size()), m_mat(init) {}
 
 // Parameter Constructor
 template <typename T>
@@ -42,7 +40,7 @@ DiagMatrix<T>::DiagMatrix(const DiagMatrix<F> &rhs)
     }
 }
 
-//copy constructor
+// copy constructor
 template <typename T>
 DiagMatrix<T>::DiagMatrix(const DiagMatrix<T> &rhs)
 {
@@ -58,7 +56,7 @@ template <typename T>
 DiagMatrix<T> DiagMatrix<T>::operator*(const DiagMatrix<T> &rhs)
 {
     if (this->get_rows() != rhs.get_rows()) {
-        throw std::invalid_argument( "two diag matrices are NOT multipliable");
+        throw std::invalid_argument("two diag matrices are NOT multipliable");
     }
 
     std::vector<T> res(this->get_rows());
@@ -73,7 +71,7 @@ template <typename F>
 DiagMatrix<double> DiagMatrix<T>::operator*(const DiagMatrix<F> &rhs)
 {
     if (this->get_rows() != rhs.get_rows()) {
-        throw std::invalid_argument( "two diag matrices are NOT multipliable");
+        throw std::invalid_argument("two diag matrices are NOT multipliable");
     }
 
     std::vector<double> res(this->get_rows());
@@ -103,7 +101,7 @@ std::shared_ptr<std::vector<std::vector<T>>> DiagMatrix<T>::GetMatrix() const
     for (size_t j = 0; j < i; j++) {
         (*res)[j][j] = GetElement(j);
     }
-    
+
     return res;
 }
 

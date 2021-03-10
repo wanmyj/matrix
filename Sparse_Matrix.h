@@ -22,35 +22,52 @@ public:
         std::initializer_list<std::initializer_list<T>> init);
     template <typename F>
     SparseMatrix(const SparseMatrix<F> &rhs);
-    SparseMatrix(const SparseMatrix<T> &rhs) = default; //copy constructor
-    SparseMatrix(SparseMatrix<T> &&rhs) = default;      //move constructor
+    SparseMatrix(const SparseMatrix<T> &rhs) = default; // copy constructor
+    SparseMatrix(SparseMatrix<T> &&rhs) = default;      // move constructor
     virtual ~SparseMatrix() = default;
 
     // Multiplication operator overloading
-    DenseMatrix<T>& operator*(const SparseMatrix<T> &rhs);
+    DenseMatrix<T> operator*(const SparseMatrix<T> &rhs);
     template <typename F>
-    DenseMatrix<double>& operator*(const SparseMatrix<F> &rhs);
+    DenseMatrix<double> operator*(const SparseMatrix<F> &rhs);
+
+    // Type Same Scalar/SparseMatrix operations
+    SparseMatrix<T> operator*(const T &rhs);
+    // Type Diff Scalar/SparseMatrix operations
+    template <typename F>
+    SparseMatrix<double> operator*(const F &rhs);
+    
     // Assignment operator overloading
     SparseMatrix<T>& operator=(const SparseMatrix<T> &rhs) = default;
     SparseMatrix<T>& operator=(SparseMatrix<T> &&rhs) = default;
 
     SparseMatrix<T>& Transpose() noexcept;
     std::shared_ptr<std::vector<std::vector<T>>> GetMatrix() const;
-    T GetElemet(const unsigned &, const unsigned &) const;
+    std::vector<unsigned> GetRowsVec() const;
+    std::vector<unsigned> GetColsVec() const;
+    std::vector<T> GetValsVec() const;
 private:
     template <typename E, typename F>
     E MultiplyHelper(unsigned i, unsigned j, const SparseMatrix<F> &rhs);
+
+// Type Same SparseMatrix/Scalar operations
+    friend SparseMatrix operator*(const T &lhs, const SparseMatrix &rhs)
+    {
+        std::vector<T> val(rhs.m_elementNums, 0);
+        for (size_t i = 0; i < rhs.m_elementNums; i++) {
+            val[i] = rhs.m_valueVec[i] * lhs;
+        }
+
+        unsigned row = rhs.get_rows();
+        unsigned col = rhs.get_cols();
+        return {row, col, rhs.m_rowVec, rhs.m_colVec, val};
+    }
 };
 
 // Type Diff Scalar/SparseMatrix operations
-template <typename T, typename F,
+template <typename E, typename F,
     typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
-SparseMatrix<double> operator*(const F &lhs, const SparseMatrix<T> &rhs);
-
-// Type Same SparseMatrix/Scalar operations
-template <typename T>
-SparseMatrix<T> operator*(const SparseMatrix<T> &lhs, const T &rhs);
-
+SparseMatrix<double> operator*(const F &lhs, const SparseMatrix<E> &rhs);
 
 } // Matrix
 
