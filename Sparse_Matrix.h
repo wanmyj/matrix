@@ -34,9 +34,16 @@ public:
     // Type Same Scalar/SparseMatrix operations
     SparseMatrix<T> operator*(const T &rhs);
     // Type Diff Scalar/SparseMatrix operations
-    template <typename F>
-    SparseMatrix<double> operator*(const F &rhs);
-    
+    template <typename F,
+        typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+    SparseMatrix<double> operator*(const F &rhs)
+    {
+        std::vector<double> val(m_elementNums, 0);
+        for (size_t i = 0; i < m_elementNums; i++) {
+            val[i] = m_valueVec[i] * rhs;
+        }
+        return {this->get_rows(), this->get_cols(), m_rowVec, m_colVec, val};
+    }
     // Assignment operator overloading
     SparseMatrix<T>& operator=(const SparseMatrix<T> &rhs) = default;
     SparseMatrix<T>& operator=(SparseMatrix<T> &&rhs) = default;

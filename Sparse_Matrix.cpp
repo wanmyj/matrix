@@ -206,16 +206,11 @@ SparseMatrix<T> SparseMatrix<T>::operator*(const T &rhs)
     return {this->get_rows(), this->get_cols(), m_rowVec, m_colVec, val};
 }
 
-template <typename T>
-template <typename F>
-SparseMatrix<double> SparseMatrix<T>::operator*(const F &rhs)
-{
-    std::vector<double> val(m_elementNums, 0);
-    for (size_t i = 0; i < m_elementNums; i++) {
-        val[i] = m_valueVec[i] * rhs;
-    }
-    return {this->get_rows(), this->get_cols(), m_rowVec, m_colVec, val};
-}
+// template <typename T>
+// template <typename F,
+//     typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+// SparseMatrix<double> SparseMatrix<T>::operator*(const F &rhs)
+
 
 // Calculate a transpose of this matrix
 template <typename T>

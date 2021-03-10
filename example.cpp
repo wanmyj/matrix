@@ -81,8 +81,8 @@ int main() {
     cout << "print di = da * 5" << endl;
     dj.PrintMat();
 
-    dj = db * 1.3;
-    cout << "print dj = db * 1.3" << endl;
+    dj = 3.2 * db ;
+    cout << "print dj = 3.2 * db" << endl;
     dj.PrintMat();
 
     // sparse matrix initialization (vector initializer_list)
@@ -100,7 +100,7 @@ int main() {
     sb.PrintMat();
 
     // sparse matrix transpose
-    cout << "matrix transpose\n" << endl;
+    cout << "sparse matrix transpose\n" << endl;
     sb.Transpose();
     cout << "print sb transpose" << endl;
     sb.PrintMat();
@@ -123,61 +123,28 @@ int main() {
     cout << "print sj = 2.7 * sa" << endl;
     sj.PrintMat();
 
-    // dense(T/double) = scalar * (sparse * scalar)
-    // dense(T/double) = scalar * (diag * scalar)
+    // dense(T/double) = scalar * sparse * (sparse * scalar)
+    DenseMatrix<double> Ds  = 3 * ( sb * 1.2);
+    cout << "print Ds  = 3 * ( sb * 1.2)" << endl;
+    Ds.PrintMat();
+
+    DenseMatrix<double> Dm  = 3 * sb * ( sb * 1.2);
+    cout << "print Dm  = 3 * sb * ( sb * 1.2)" << endl;
+    Dm.PrintMat();
+
+    // dense(T/double) = sparse * (diag * scalar)
+    DiagMatrix<int> dn{1, 2, 3, 4, 5};
+    DenseMatrix<double> Dn  = 3.2 * sb * ( dn * 2);
+    cout << "print Dn  = 3.2 * sb * ( dn * 2)" << endl;
+    Dn.PrintMat();
+
     // dense(T/double) = diag * (scalar * (diag * scalar) * sparse.transpose)
+    DenseMatrix<double> Do  = dn * (3 * (dn * 2.1) * sb.Transpose());
+    cout << "print Do  = dn * (3 * (dn * 2.1) * sb.Transpose())" << endl;
+    Do.PrintMat();
 
     // exception test
     cout << "-----------------------" << endl;
-
-    // DenseMatrix<int> d = b * c;
-    // cout << "print d" << endl;
-    // d.PrintMat();
-
-    // DenseMatrix<double> f = b * c;
-    // cout << "print f" << endl;
-    // f.PrintMat();
-
-    // f.Transpose();
-    // cout << "print f Tranpose" << endl;
-    // f.PrintMat();
-
-    // DenseMatrix<int> g{{1, 2, 3},{3, 2, 1}, {2, 2, 2}};
-    // DenseMatrix<float> h{{1.2},{3.7, 1}, {2, 2}};
-    // DenseMatrix<int> i{{1},{3}};
-    // DenseMatrix<float> k{{2.34}};
-
-    // cout << "print f = g * h * i * k" << endl;
-    // f = g * h * 3 * i * k;
-    // f.PrintMat();
-
-    // a = 3 * b;
-    // a = b * 3;
-    // a = 3 * b * 3;
-    // cout << "print a = 3 * b * 3" << endl;
-    // a.PrintMat();
-    // a = 3 * (b * 3);
-    // cout << "print a = 3 * (b * 3)" << endl;
-    // a.PrintMat();
-
-    // f = 3 * b;
-    // f = b * 3;
-    // f = 3 * b * 3;
-    // cout << "print f = 3 * b * 3" << endl;
-    // f.PrintMat();
-    // f = 3 * (b * 3);    
-    // cout << "print f = 3 * (b * 3)" << endl;
-    // f.PrintMat();
-
-    // f = 3 * h;
-    // f = h * 3;
-    // f = 3 * h * 3;
-    // cout << "print f = 3 * h * 3" << endl;
-    // f.PrintMat();
-    // f = 3 * (h * 3);    
-    // cout << "print f = 3 * (h * 3)" << endl;
-    // f.PrintMat();
-    
     // try {
     //     f = f * f.Transpose(); //this is wrong
     //     cout << "f = f * f.Transpose()" << endl;
@@ -185,48 +152,6 @@ int main() {
     // } catch(const std::exception& e) {
     //     std::cerr << e.what() << '\n';
     // }
-
-    // cout << "-----------------------" << endl;
-
-
-    // DiagMatrix<int> dc = da * db;
-    // cout << "print dc{v}" << endl;
-    // dc.PrintMat();
-
-    // vector<float> v2{1, 2.02, 3};
-    // DiagMatrix<float> df{v2};
-    // DiagMatrix<double> dd = da * df;
-    // cout << "print dd{v}" << endl;
-    // dd.PrintMat();
-
-    // f = b * dd;
-    // cout << "print f = b * dd" << endl;
-    // f.PrintMat();
-
-    // f = da * 3.6;
-    // cout << "print f = da * 3.6" << endl;
-    // f.PrintMat();
-
-    // f = 4.8 * da;
-    // cout << "print f = 4.8 * da" << endl;
-    // f.PrintMat();
-
-    // f = 4.8 * da * dc;
-    // cout << "print f = 4.8 * da * dc" << endl;
-    // f.PrintMat();
-
-    // cout << "-----------------------" << endl;
-
-
-
-    // DenseMatrix<double> sc = sa * sb;
-    // cout << "print sc = sa * sb" << endl;
-    // sc.PrintMat();
-
-    // SparseMatrix<int> se = sa;
-    // DenseMatrix<int> sd = se * sa.Transpose();
-    // cout << "print sd = sa * sa.Transpose()" << endl;
-    // sd.PrintMat();
     cin.get();
     return 0;
 }

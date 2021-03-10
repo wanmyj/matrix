@@ -58,10 +58,9 @@ DenseMatrix<T>::DenseMatrix
 
 template <typename T>
 template <typename F>
-DenseMatrix<T>::DenseMatrix(const DenseMatrix<F> &rhs)
+DenseMatrix<T>::DenseMatrix(const ProductExpr<F> &rhs)
 {
-    BaseMatrix<T>::operator=(rhs);
-    std::vector<std::vector<F>> aVec = *(rhs.GetMatrix());
+    std::vector<std::vector<F>> aVec = rhs.m_mat;
     BaseMatrix<T>::m_rows = aVec.size();
     BaseMatrix<T>::m_cols = aVec[0].size();
     m_mat.resize(BaseMatrix<T>::m_rows);
@@ -77,10 +76,17 @@ DenseMatrix<T>::DenseMatrix(const DenseMatrix<F> &rhs)
 }
 
 template <typename T>
-template <typename F>
-DenseMatrix<T>::DenseMatrix(const ProductExpr<F> &rhs)
+DenseMatrix<T>::DenseMatrix(const ProductExpr<T> &rhs)
 {
-    std::vector<std::vector<F>> aVec = rhs.m_mat;
+    CopyFromMat(rhs.m_mat);
+}
+
+template <typename T>
+template <typename F>
+DenseMatrix<T>::DenseMatrix(const DenseMatrix<F> &rhs)
+{
+    BaseMatrix<T>::operator=(rhs);
+    std::vector<std::vector<F>> aVec = *(rhs.GetMatrix());
     BaseMatrix<T>::m_rows = aVec.size();
     BaseMatrix<T>::m_cols = aVec[0].size();
     m_mat.resize(BaseMatrix<T>::m_rows);
@@ -103,9 +109,30 @@ DenseMatrix<T>::DenseMatrix(const DenseMatrix<T> &rhs)
 }
 
 template <typename T>
-DenseMatrix<T>::DenseMatrix(const ProductExpr<T> &rhs)
+template <typename F>
+DenseMatrix<T>::DenseMatrix(const BaseMatrix<F> &rhs) // copy constructor
 {
-    CopyFromMat(rhs.m_mat);
+    BaseMatrix<T>::operator=(rhs);
+    std::vector<std::vector<F>> aVec = *(rhs.GetMatrix());
+    BaseMatrix<T>::m_rows = aVec.size();
+    BaseMatrix<T>::m_cols = aVec[0].size();
+    m_mat.resize(BaseMatrix<T>::m_rows);
+    for (unsigned i = 0; i < m_mat.size(); i++) {
+        m_mat[i].resize(BaseMatrix<T>::m_cols);
+    }
+
+    for (unsigned i = 0; i < BaseMatrix<T>::m_rows; i++) {
+        for (unsigned j = 0; j < BaseMatrix<T>::m_cols; j++) {
+            m_mat[i][j] = aVec[i][j];
+        }
+    }
+}
+
+template <typename T>
+DenseMatrix<T>::DenseMatrix(const BaseMatrix<T> &rhs) // copy constructor
+{
+    BaseMatrix<T>::operator=(rhs);
+    CopyFromMat(*(rhs.GetMatrix()));
 }
 
 // Assignment Operator

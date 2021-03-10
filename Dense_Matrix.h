@@ -12,12 +12,15 @@ public:
     DenseMatrix();
     DenseMatrix(std::vector<std::vector<T>> init);
     DenseMatrix(std::initializer_list<std::initializer_list<T>> init);
-    DenseMatrix(const ProductExpr<T> &rhs); // copy constructor
-    DenseMatrix(const DenseMatrix<T> &rhs); // copy constructor
     template <typename F>
     DenseMatrix(const ProductExpr<F> &rhs); // copy constructor
+    DenseMatrix(const ProductExpr<T> &rhs); // copy constructor
     template <typename F>
     DenseMatrix(const DenseMatrix<F> &rhs); // copy constructor
+    DenseMatrix(const DenseMatrix<T> &rhs); // copy constructor
+    template <typename F>
+    DenseMatrix(const BaseMatrix<F> &rhs); // copy constructor
+    DenseMatrix(const BaseMatrix<T> &rhs); // copy constructor
     DenseMatrix(DenseMatrix<T> &&rhs) noexcept = default;   // move constructor
     virtual ~DenseMatrix() = default;
 
