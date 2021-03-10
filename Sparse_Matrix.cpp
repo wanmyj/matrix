@@ -22,7 +22,7 @@ template <typename T>
 SparseMatrix<T>::SparseMatrix(unsigned rows, unsigned cols,
     std::vector<unsigned> rVec, std::vector<unsigned> cVec, std::vector<T> init)
 {
-    if (rVec.size() != cVec.size() || cVec.size != init.size()) {
+    if (rVec.size() != cVec.size() || cVec.size() != init.size()) {
         throw std::invalid_argument("the 3 vector size should be equal");
     }
 

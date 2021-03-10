@@ -40,7 +40,7 @@ template <typename T>
 void BaseMatrix<T>::PrintMat() const
 {
     std::shared_ptr<std::vector<std::vector<T>>> mat = GetMatrix();
-    std::cout << "Mat = " << std::endl;
+    std::cout << "Mat row: " << m_rows << " col: " << m_cols << std::endl;
     for (auto rows : (*mat)) {
         for (auto it : rows) {
             std::cout << it << ' ';

@@ -13,6 +13,50 @@ DenseMatrix<T>::DenseMatrix()
 }
 
 template <typename T>
+DenseMatrix<T>::DenseMatrix(std::vector<std::vector<T>> init)
+{
+    unsigned rows = init.size();
+    unsigned cols = 0;
+    for (auto& it : init) {
+        cols = cols > it.size() ? cols : it.size();
+    }
+    UnityMatrix(rows, cols, 0);
+    unsigned i = 0;
+    unsigned j = 0;
+    for (auto& aRow : init) {
+        for (auto& element : aRow) {
+            m_mat[i][j] = element;
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
+
+// Parameter Constructor
+template <typename T>
+DenseMatrix<T>::DenseMatrix
+    (std::initializer_list<std::initializer_list<T>> init)
+{
+    unsigned rows = init.size();
+    unsigned cols = 0;
+    for (auto& it : init) {
+        cols = cols > it.size() ? cols : it.size();
+    }
+    UnityMatrix(rows, cols, 0);
+    unsigned i = 0;
+    unsigned j = 0;
+    for (auto& aRow : init) {
+        for (auto& element : aRow) {
+            m_mat[i][j] = element;
+            j++;
+        }
+        j = 0;
+        i++;
+    }
+}
+
+template <typename T>
 template <typename F>
 DenseMatrix<T>::DenseMatrix(const DenseMatrix<F> &rhs)
 {
@@ -62,50 +106,6 @@ template <typename T>
 DenseMatrix<T>::DenseMatrix(const ProductExpr<T> &rhs)
 {
     CopyFromMat(rhs.m_mat);
-}
-
-template <typename T>
-DenseMatrix<T>::DenseMatrix(std::vector<std::vector<T>> init)
-{
-    unsigned rows = init.size();
-    unsigned cols = 0;
-    for (auto& it : init) {
-        cols = cols > it.size() ? cols : it.size();
-    }
-    UnityMatrix(rows, cols, 0);
-    unsigned i = 0;
-    unsigned j = 0;
-    for (auto& aRow : init) {
-        for (auto& element : aRow) {
-            m_mat[i][j] = element;
-            j++;
-        }
-        j = 0;
-        i++;
-    }
-}
-
-// Parameter Constructor
-template <typename T>
-DenseMatrix<T>::DenseMatrix
-    (std::initializer_list<std::initializer_list<T>> init)
-{
-    unsigned rows = init.size();
-    unsigned cols = 0;
-    for (auto& it : init) {
-        cols = cols > it.size() ? cols : it.size();
-    }
-    UnityMatrix(rows, cols, 0);
-    unsigned i = 0;
-    unsigned j = 0;
-    for (auto& aRow : init) {
-        for (auto& element : aRow) {
-            m_mat[i][j] = element;
-            j++;
-        }
-        j = 0;
-        i++;
-    }
 }
 
 // Assignment Operator
