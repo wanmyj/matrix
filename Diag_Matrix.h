@@ -28,7 +28,7 @@ public:
     DiagMatrix<T>& operator=(const DiagMatrix<T> &rhs);
     DiagMatrix<T>& operator=(DiagMatrix<T> &&rhs) = default;
 
-    DiagMatrix<T>& Transpose() {};
+    DiagMatrix<T>& Transpose() { return *this; };
     std::shared_ptr<std::vector<std::vector<T>>> GetMatrix() const;
     T GetElement(const unsigned &) const;
 private:
