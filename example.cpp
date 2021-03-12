@@ -78,11 +78,15 @@ int main() {
     di.PrintMat();
 
     DiagMatrix<double> dj = da * 1.3;
-    cout << "print di = da * 5" << endl;
+    cout << "print dj = da * 5" << endl;
     dj.PrintMat();
 
     dj = 3.2 * db ;
     cout << "print dj = 3.2 * db" << endl;
+    dj.PrintMat();
+
+    dj = da * dj;
+    cout << "print dj = da * dj" << endl;
     dj.PrintMat();
 
     // sparse matrix initialization (vector initializer_list)
@@ -122,6 +126,10 @@ int main() {
     sj = 2.7 * sa;
     cout << "print sj = 2.7 * sa" << endl;
     sj.PrintMat();
+
+    DenseMatrix<double> Dp  = sb * sb;
+    cout << "print Dp  = sb * sb" << endl;
+    Dp.PrintMat();
 
     // dense(T/double) = scalar * sparse * (sparse * scalar)
     DenseMatrix<double> Ds  = 3 * ( sb * 1.2);

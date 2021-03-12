@@ -85,7 +85,6 @@ template <typename T>
 template <typename F>
 DenseMatrix<T>::DenseMatrix(const DenseMatrix<F> &rhs)
 {
-    BaseMatrix<T>::operator=(rhs);
     std::vector<std::vector<F>> aVec = *(rhs.GetMatrix());
     BaseMatrix<T>::m_rows = aVec.size();
     BaseMatrix<T>::m_cols = aVec[0].size();

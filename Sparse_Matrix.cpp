@@ -28,7 +28,7 @@ SparseMatrix<T>::SparseMatrix(unsigned rows, unsigned cols,
 
     unsigned elementNums = init.size();
     for (size_t i = 0; i < elementNums; i++) {
-        if (rVec[i] > rows || cVec[i] > cols) {
+        if (rVec[i] >= rows || cVec[i] >= cols) {
             throw std::invalid_argument("the coord is ourside of matrix");
         }
     }
@@ -51,7 +51,7 @@ SparseMatrix<T>::SparseMatrix(unsigned rows, unsigned cols,
         if (it.size() != 3) {
             throw std::invalid_argument("the list size should be 3");
         }
-        if (*(it.begin()) > rows || *(it.begin() + 1) > cols) {
+        if (*(it.begin()) >= rows || *(it.begin() + 1) >= cols) {
             throw std::invalid_argument("the coord is ourside of matrix");
         }
     }
@@ -135,8 +135,8 @@ E SparseMatrix<T>::MultiplyHelper(unsigned i, unsigned j,
         auto itEnd = m_colVec.end();
         E left {0};
         while ((iter = std::find_if(iter, itEnd, func)) != itEnd) {
-            iter++;
             unsigned dis = iter - itBegin;
+            iter++;
             if (m_rowVec[dis] == i) {
                 left = m_valueVec[dis];
                 break;
@@ -150,8 +150,8 @@ E SparseMatrix<T>::MultiplyHelper(unsigned i, unsigned j,
         itEnd = rhsRowVec.end();
         E right {0};
         while ((iter = std::find_if(iter, itEnd, func)) != itEnd) {
-            iter++;
             unsigned dis = iter - itBegin;
+            iter++;
             if (m_colVec[dis] == j) {
                 right = rhs.GetValsVec()[dis];
                 break;
