@@ -217,7 +217,8 @@ inline ProductExpr<double> operator*(const ProductExpr<T> &lhs,
 }
 
 // Type Diff Matrix/Scalar operations
-template <typename T, typename F, typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+template <typename T, typename F,
+    typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
 ProductExpr<double> operator*(const BaseMatrix<T> &lhs, const F &rhs)
 {
     std::shared_ptr<std::vector<std::vector<T>>> originMat = lhs.GetMatrix();
@@ -234,7 +235,8 @@ ProductExpr<double> operator*(const BaseMatrix<T> &lhs, const F &rhs)
 }
 
 // Type Diff Scalar/Matrix operations
-template <typename T, typename F, typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
+template <typename T, typename F,
+    typename std::enable_if<std::is_arithmetic<F>::value>::type* = nullptr>
 ProductExpr<double> operator*(const F &lhs, const BaseMatrix<T> &rhs)
 {
     std::shared_ptr<std::vector<std::vector<T>>> originMat = rhs.GetMatrix();
