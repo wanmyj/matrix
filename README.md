@@ -41,7 +41,7 @@ It also would be a good practice to overload `operator*` for the sake of optimiz
 ## Test Environment
 
     c++11 standard
-    g++ 6.3.0
+    g++ 9.3.0
     Ubuntu 18.04
    
 ## Compile Cmd
