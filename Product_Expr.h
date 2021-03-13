@@ -15,6 +15,46 @@ struct IsSameType<true> {
     using type = void;
 };
 
+
+// G : c++ judge is same type in template function
+
+// #include <iostream>
+// #include <type_traits>
+// #include <string>
+
+// template <class, template <class> class>
+// struct is_instance : public std::false_type {};
+
+// template <class T, template <class> class U>
+// struct is_instance<U<T>, U> : public std::true_type {};
+
+// template <class>
+// class Second 
+// {};
+
+// int main()
+// {
+//     using A = Second<int>;
+//     using B = Second<std::string>;
+//     using C = float;
+//     std::cout << is_instance<A, Second>{} << '\n'; // prints 1
+//     std::cout << is_instance<B, Second>{} << '\n'; // prints 1
+//     std::cout << is_instance<C, Second>{} << '\n'; // prints 0
+// }
+
+
+// #include <type_traits>
+
+// template <typename T> MyClass::doSomething() {
+//     //this is what I want:
+//     std::string value = "17";
+//     if(std::is_same<T,int>::value) {
+//          int myInt = atoi(value.c_str());
+//     } else if(std::is_same<T,std::string>::value) {
+//          std::string myString = value;
+//     }
+// }
+
 template<bool>
 struct EnableIf {};
 
