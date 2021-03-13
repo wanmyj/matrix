@@ -7,6 +7,33 @@
 
 namespace Matrix {
 
+template<bool>
+struct IsSameType {};
+
+template<>
+struct IsSameType<true> {
+    using type = void;
+};
+
+template<bool>
+struct EnableIf {};
+
+template<>
+struct EnableIf<true> {
+    using type = void;
+};
+
+template <class T>
+void foo(T) {
+    ;
+}
+
+// attention: class = **** is not part of the signature of a function template
+template <class T, class = typename EnableIf<std::is_unsigned<T>::value>::type>
+void foo(T) {
+    ;
+}
+
 template <typename T>
 class BaseMatrix;
 
