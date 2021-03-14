@@ -7,8 +7,10 @@
 namespace Matrix {
 
 template <typename T>
-class BaseMatrix
+class BaseMatrix : Base
 {
+public:
+    typedef T   datatype;
 protected:
     unsigned m_rows;
     unsigned m_cols;
