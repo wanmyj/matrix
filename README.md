@@ -40,14 +40,15 @@ To add a derived matrix class, the minimum requirement:
 It also would be a good practice to overload `operator*` for the sake of optimizations
 ## Test Environment
 
-    c++11 standard
+    c++11 standard (enable_if branch: c++14)
     g++ 9.3.0
     Ubuntu 18.04
    
 ## Compile Cmd
 
 ```sh
-g++ -std=c++11 -I. example.cpp
+(master branch) g++ -std=c++11 -I. example.cpp
+(enable_if branch) g++ -std=c++14 -I. example.cpp
 ```
 
 ## Example program
@@ -215,102 +216,196 @@ output:
 
 ```sh
 
+dense matrix initialization
+print Da
+Mat row: 1 col: 1
+1
+
+print Db
+Mat row: 3 col: 3
+1 2 3
+3 1 0
+2 2 2
+
+print Dc
+Mat row: 3 col: 4
+1 2 3 4
+2 0 0 0
+5 2 1 0
+
+print Db transpose
+Mat row: 3 col: 3
+1 3 2
+2 1 2
+3 0 2
+
+dense matrix multiply
+
+print Di = Db * 3
+Mat row: 3 col: 3
+3 9 6
+6 3 6
+9 0 6
+
+print Di = 3 * Di
+Mat row: 3 col: 3
+9 27 18
+18 9 18
+27 0 18
+
+print Dj = Dc * 3
+Mat row: 3 col: 4
+3 6 9 12
+6 0 0 0
+15 6 3 0
+
+print Dj = 3.1 * Da
+Mat row: 1 col: 1
+3.1
+
+diag matrix initialization
+print da{1, 2, 3}
+Mat row: 3 col: 3
+1 0 0
+0 2 0
+0 0 3
+
+print db{dvb}
+Mat row: 3 col: 3
+1 0 0
+0 2.4 0
+0 0 3
+
+print db transpose
+Mat row: 3 col: 3
+1 0 0
+0 2.4 0
+0 0 3
+
+diag matrix multiply
+
 print di = da * 5
 Mat row: 3 col: 3
-1.3 0 0 
-0 2.6 0 
-0 0 3.9 
+5 0 0
+0 10 0
+0 0 15
+
+print di = 12 * di
+Mat row: 3 col: 3
+60 0 0
+0 120 0
+0 0 180
+
+print dj = da * 5
+Mat row: 3 col: 3
+1.3 0 0
+0 2.6 0
+0 0 3.9
 
 print dj = 3.2 * db
 Mat row: 3 col: 3
-3.2 0 0 
-0 7.68 0 
-0 0 9.6 
+3.2 0 0
+0 7.68 0
+0 0 9.6
+
+print dj = da * dj
+Mat row: 3 col: 3
+3.2 0 0
+0 15.36 0
+0 0 28.8
 
 sparse matrix initialization
 print sa
 Mat row: 3 col: 4
-0 0 0 0 
-0 0 3 0 
-0 0 4 0 
+0 0 0 0
+0 0 3 0
+0 0 4 0
 
 print sb
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 0 4 0 
-0 1.3 1 0 0 
-0 0 0 0 0 
-0 0 0 0 8 
+0 0 0 0 0
+0 0 0 4 0
+0 1.3 1 0 0
+0 0 0 0 0
+0 0 0 0 8
 
 sparse matrix transpose
 
 print sb transpose
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 1.3 0 0 
-0 0 1 0 0 
-0 4 0 0 0 
-0 0 0 0 8 
+0 0 0 0 0
+0 0 1.3 0 0
+0 0 1 0 0
+0 4 0 0 0
+0 0 0 0 8
 
 diag matrix multiply
 
 print si = sa * 3
 Mat row: 3 col: 4
-0 0 0 0 
-0 0 9 0 
-0 0 12 0 
+0 0 0 0
+0 0 9 0
+0 0 12 0
 
 print si = 4 * si
 Mat row: 3 col: 4
-0 0 0 0 
-0 0 36 0 
-0 0 48 0 
+0 0 0 0
+0 0 36 0
+0 0 48 0
 
 print sj = sb * 3
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 3.9 0 0 
-0 0 3 0 0 
-0 12 0 0 0 
-0 0 0 0 24 
+0 0 0 0 0
+0 0 3.9 0 0
+0 0 3 0 0
+0 12 0 0 0
+0 0 0 0 24
 
 print sj = 2.7 * sa
 Mat row: 3 col: 4
-0 0 0 0 
-0 0 8.1 0 
-0 0 10.8 0 
+0 0 0 0
+0 0 8.1 0
+0 0 10.8 0
+
+print Dp  = sb * sb
+Mat row: 5 col: 5
+0 0 0 0 0
+0 0 1.3 0 0
+0 0 1 0 0
+0 0 5.2 0 0
+0 0 0 0 64
 
 print Ds  = 3 * ( sb * 1.2)
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 4.68 0 0 
-0 0 3.6 0 0 
-0 14.4 0 0 0 
-0 0 0 0 28.8 
+0 0 0 0 0
+0 0 4.68 0 0
+0 0 3.6 0 0
+0 14.4 0 0 0
+0 0 0 0 28.8
 
 print Dm  = 3 * sb * ( sb * 1.2)
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 0 0 0 
-0 14.4 0 0 0 
-0 57.6 0 0 0 
-0 0 28.8 0 0 
+0 0 0 0 0
+0 0 4.68 0 0
+0 0 3.6 0 0
+0 0 18.72 0 0
+0 0 0 0 230.4
 
 print Dn  = 3.2 * sb * ( dn * 2)
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 24.96 0 0 
-0 0 19.2 0 0 
-0 51.2 0 0 0 
-0 0 0 0 256 
+0 0 0 0 0
+0 0 24.96 0 0
+0 0 19.2 0 0
+0 51.2 0 0 0
+0 0 0 0 256
 
 print Do  = dn * (3 * (dn * 2.1) * sb.Transpose())
 Mat row: 5 col: 5
-0 0 0 0 0 
-0 0 0 100.8 0 
-0 73.71 56.7 0 0 
-0 0 0 0 0 
-0 0 0 0 1260 
+0 0 0 0 0
+0 0 0 100.8 0
+0 73.71 56.7 0 0
+0 0 0 0 0
+0 0 0 0 1260
 
 -----------------------
 two matrices are NOT multipliable
@@ -320,3 +415,5 @@ two matrices are NOT multipliable
 <https://www.quantstart.com/articles/Matrix-Classes-in-C-The-Header-File/>
 
 <https://www.quantstart.com/articles/Matrix-Classes-in-C-The-Source-File/>
+
+<https://akrzemi1.wordpress.com/2017/12/02/your-own-type-predicate/>
