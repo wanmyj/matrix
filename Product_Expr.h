@@ -7,18 +7,26 @@
 
 namespace Matrix {
 
+class Base {};
+
+template <typename>
+struct is_matrix_expr : public std::false_type {};
 template <typename T>
 class BaseMatrix;
 
 template <typename T>
-class ProductExpr
+class ProductExpr : Base
 {
 public:
     std::vector<std::vector<T>> m_mat;
+    typedef T   datatype;
 public:
     template <typename F, typename E>
     ProductExpr(const BaseMatrix<E> &lhs, const BaseMatrix<F> &rhs)
     {
+        if (lhs.get_cols() != rhs.get_rows()) {
+            throw std::invalid_argument("two matrices are NOT multipliable");
+        }
         std::shared_ptr<std::vector<std::vector<E>>> lmat = lhs.GetMatrix();
         unsigned lrow = lhs.get_rows();
         unsigned lcol = lhs.get_cols();
@@ -45,6 +53,9 @@ public:
     template <typename F, typename E>
     ProductExpr(const ProductExpr<E> &lhs, const BaseMatrix<F> &rhs)
     {
+        if (lhs.m_mat[0].size() != rhs.get_rows()) {
+            throw std::invalid_argument("two matrices are NOT multipliable");
+        }
         unsigned lrow = lhs.m_mat.size();
 
         std::shared_ptr<std::vector<std::vector<F>>> rmat = rhs.GetMatrix();
@@ -69,6 +80,9 @@ public:
     template <typename F, typename E>
     ProductExpr(const BaseMatrix<F> &lhs, const ProductExpr<E> &rhs)
     {
+        if (lhs.get_cols() != rhs.m_mat.size()) {
+            throw std::invalid_argument("two matrices are NOT multipliable");
+        }
         std::shared_ptr<std::vector<std::vector<F>>> lmat = lhs.GetMatrix();
         unsigned lrow = lhs.get_rows();
         unsigned lcol = lhs.get_cols();
@@ -93,7 +107,9 @@ public:
     template <typename F, typename E>
     ProductExpr(const ProductExpr<E> &lhs, const ProductExpr<F> &rhs)
     {
-
+        if (lhs.m_mat[0].size() != rhs.m_mat.size()) {
+            throw std::invalid_argument("two matrices are NOT multipliable");
+        }
         unsigned lrow = lhs.m_mat.size();
         unsigned rrow = rhs.m_mat.size();
         unsigned rcol = rhs.m_mat[0].size();
@@ -128,92 +144,35 @@ public:
 
 };
 
-// Matrix<T> * Matrix<T> operations
+
 template <typename T>
-inline ProductExpr<T> operator*(const BaseMatrix<T> &lhs,
-    const BaseMatrix<T> &rhs)
-{
-    if (lhs.get_cols() != rhs.get_rows()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<T>(lhs, rhs);
-}
-
-// Matrix<T> * Matrix<F> operations
-template <typename T, typename F>
-inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs, 
-    const BaseMatrix<F> &rhs)
-{
-    if (lhs.get_cols() != rhs.get_rows()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<double>(lhs, rhs);
-}
-
-// ProductExpr<T> * Matrix<T> operations
+struct is_matrix_expr<ProductExpr<T>> : public std::true_type {};
 template <typename T>
-inline ProductExpr<T> operator*(const ProductExpr<T> &lhs,
-    const BaseMatrix<T> &rhs)
+struct is_matrix_expr<BaseMatrix<T>> : public std::true_type {};
+
+
+template <typename E, typename F,
+    class = typename std::enable_if<std::is_base_of<Base, E>::value &&
+                                    std::is_base_of<Base, F>::value>::type,
+    class = typename std::enable_if<
+        std::is_same<typename std::remove_cv<E>::type::datatype,
+                     typename std::remove_cv<F>::type::datatype>::value>::type
+>
+inline auto operator*(const E &lhs, const F &rhs)
 {
-    if (lhs.m_mat[0].size() != rhs.get_rows()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<T>(lhs, rhs);
+    return  ProductExpr<typename std::remove_cv<F>::type::datatype>(lhs, rhs);
 }
 
-// ProductExpr<T> * Matrix<F> operations
-template <typename T, typename F>
-inline ProductExpr<double> operator*(const ProductExpr<T> &lhs, 
-    const BaseMatrix<F> &rhs)
+template <typename E, typename F,
+    typename std::enable_if<std::is_base_of<Base, E>::value &&
+                            std::is_base_of<Base, F>::value>::type* = nullptr,
+    class = typename std::enable_if<
+        !std::is_same<typename std::remove_cv<E>::type::datatype,
+                      typename std::remove_cv<F>::type::datatype>::value>::type
+>
+inline auto operator*(const E &lhs, const F &rhs)
 {
-    if (lhs.m_mat[0].size() != rhs.get_rows()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<double>(lhs, rhs);
-}
-
-// Matrix<T> * ProductExpr<T> operations
-template <typename T>
-inline ProductExpr<T> operator*(const BaseMatrix<T> &lhs, 
-    const ProductExpr<T> &rhs)
-{
-    if (lhs.get_cols() != rhs.m_mat.size()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<T>(lhs, rhs);
-}
-
-// Matrix<T> * ProductExpr<F> operations
-template <typename T, typename F>
-inline ProductExpr<double> operator*(const BaseMatrix<T> &lhs, 
-    const ProductExpr<F> &rhs)
-{
-    if (lhs.get_cols() != rhs.m_mat.size()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<double>(lhs, rhs);
-}
-
-// ProductExpr<T> * ProductExpr<T> operations
-template <typename T>
-inline ProductExpr<T> operator*(const ProductExpr<T> &lhs,
-    const ProductExpr<T> &rhs)
-{
-    if (lhs.m_mat[0].size() != rhs.m_mat.size()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<T>(lhs, rhs);
-}
-
-// ProductExpr<T> * ProductExpr<F> operations
-template <typename T, typename F>
-inline ProductExpr<double> operator*(const ProductExpr<T> &lhs, 
-    const ProductExpr<F> &rhs)
-{
-    if (lhs.m_mat[0].size() != rhs.m_mat.size()) {
-        throw std::invalid_argument("two matrices are NOT multipliable");
-    }
-    return ProductExpr<double>(lhs, rhs);
+    return  ProductExpr<double>(lhs, rhs);
 }
 
 // Type Diff Matrix/Scalar operations
